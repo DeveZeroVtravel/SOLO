@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* =============================================
+   LIGHT MODE (Default)
+   Base: #dfe3ea — clean neutral-warm
+============================================= */
+:root {
+  --bg: #dfe3ea;
+  --bg-surface: #dfe3ea;
+  --text-primary: #1c2333;
+  --text-secondary: #5a6480;
+  --text-muted: #9aa5b4;
+  --accent: #22c55e;          /* green-500  */
+  --accent-dim: #16a34a;      /* green-600  */
+  --accent-glow: rgba(34, 197, 94, 0.20);
+  --danger: #ef4444;
+
+  /* Neumorphic shadows — light */
+  --sh-raised:  6px 6px 14px #b8bec8, -6px -6px 14px #ffffff;
+  --sh-card:   10px 10px 20px #b8bec8, -10px -10px 20px #ffffff;
+  --sh-float:  16px 16px 32px #b0b6c0, -16px -16px 32px #ffffff;
+  --sh-inset:  inset 4px 4px 10px #b8bec8, inset -4px -4px 10px #ffffff;
+  --sh-inset-sm: inset 2px 2px 6px #c0c6d0, inset -2px -2px 6px #ffffff;
+  --sh-accent: 4px 4px 12px rgba(34,197,94,0.35), -4px -4px 12px #ffffff;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --border-strong: #9aa5b4;
+}
+
+/* =============================================
+   DARK MODE  (.dark on <html>)
+   Base: #1e2130 — deep blue-grey
+============================================= */
+.dark {
+  --bg: #1e2130;
+  --bg-surface: #1e2130;
+  --text-primary: #e2e8f0;
+  --text-secondary: #8892a4;
+  --text-muted: #4a5568;
+  --accent: #22c55e;
+  --accent-dim: #16a34a;
+  --accent-glow: rgba(34, 197, 94, 0.18);
+  --danger: #f87171;
+
+  --sh-raised:  6px 6px 14px #151822, -6px -6px 14px #272c3e;
+  --sh-card:   10px 10px 20px #141720, -10px -10px 20px #282d40;
+  --sh-float:  16px 16px 32px #111420, -16px -16px 32px #2a3044;
+  --sh-inset:  inset 4px 4px 10px #141720, inset -4px -4px 10px #282d40;
+  --sh-inset-sm: inset 2px 2px 6px #161924, inset -2px -2px 6px #262b3c;
+  --sh-accent: 4px 4px 14px rgba(34,197,94,0.30), -2px -2px 8px #262b3c;
+  --border-strong: #3d4460;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text-primary);
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* ──────────────────────────────────────
+   UTILITY CLASSES
+────────────────────────────────────── */
+
+/* Cards / Panels */
+.neu-card {
+  background: var(--bg-surface);
+  box-shadow: var(--sh-card);
+  border-radius: var(--radius-lg);
+}
+
+/* Raised buttons / elements */
+.neu-raised {
+  background: var(--bg-surface);
+  box-shadow: var(--sh-raised);
+  border-radius: var(--radius-md);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.neu-raised:hover {
+  box-shadow: var(--sh-float);
+  transform: translateY(-1px);
+}
+.neu-raised:active {
+  box-shadow: var(--sh-inset);
+  transform: translateY(0);
+}
+
+/* Inset (input, depressed areas) */
+.neu-inset {
+  background: var(--bg-surface);
+  box-shadow: var(--sh-inset);
+  border-radius: var(--radius-md);
+}
+.neu-inset-sm {
+  background: var(--bg-surface);
+  box-shadow: var(--sh-inset-sm);
+  border-radius: var(--radius-sm);
+}
+
+/* Active / selected nav item */
+.neu-active {
+  box-shadow: var(--sh-inset);
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+}
+
+/* Accent button */
+.neu-btn-accent {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  box-shadow: var(--sh-accent);
+  transition: box-shadow 0.2s ease, transform 0.15s ease, filter 0.2s ease;
+}
+.neu-btn-accent:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.neu-btn-accent:active {
+  filter: brightness(0.95);
+  transform: translateY(0);
+  box-shadow: var(--sh-inset);
+}
+.neu-btn-accent:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Floating bar */
+.neu-float-bar {
+  background: var(--bg-surface);
+  box-shadow: var(--sh-float);
+  border-radius: var(--radius-xl);
+}
+
+/* Subtle divider */
+.neu-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(90,100,128,0.18), transparent);
+  border: none;
+  margin: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(90,100,128,0.25);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(90,100,128,0.45); }
+
+/* Smooth page transitions */
+main { animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
