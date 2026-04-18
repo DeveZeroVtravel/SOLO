@@ -1,7 +1,8 @@
 services:
-  # Giả lập VM-AI
+  # AI Engine
   ollama-service:
     image: ollama/ollama
+    container_name: ollama-service
     ports:
       - "11434:11434"
     volumes:
@@ -9,17 +10,39 @@ services:
     environment:
       - OLLAMA_ORIGINS=*
       - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+    networks:
+      - app-network
 
-  # Giả lập VM-APP
-  vibe-app:
-    build: .
+  # Next.js Application
+  smart-cal-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_FIREBASE_API_KEY=${NEXT_PUBLIC_FIREBASE_API_KEY}
+        - NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}
+        - NEXT_PUBLIC_FIREBASE_PROJECT_ID=${NEXT_PUBLIC_FIREBASE_PROJECT_ID}
+        - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}
+        - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}
+        - NEXT_PUBLIC_FIREBASE_APP_ID=${NEXT_PUBLIC_FIREBASE_APP_ID}
+        - NEXT_PUBLIC_OLLAMA_URL=http://ollama-service:11434
+        - NEXT_PUBLIC_OLLAMA_MODEL=${NEXT_PUBLIC_OLLAMA_MODEL:-hf.co/nguyenviet/PhoGPT-4B-Chat-GGUF}
+    container_name: smart-cal-app
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_OLLAMA_URL=http://ollama-service:11434 # Kết nối nội bộ Docker
-      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - NODE_ENV=production
+      - NEXT_PUBLIC_OLLAMA_URL=http://ollama-service:11434
     depends_on:
       - ollama-service
+    restart: unless-stopped
+    networks:
+      - app-network
 
 volumes:
   ollama_data:
+
+networks:
+  app-network:
+    driver: bridge
